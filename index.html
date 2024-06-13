@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин Автозапчастей</title>
+    <script src="/Main.js"></script>
+    <style>
+        .username {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1em;
+            color: black;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            
+        }
+
+        header {
+            background-color: #FFC107;
+            color: black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #000;
+        }
+
+        nav a {
+            color: #FFC107;
+            padding: 15px 25px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #FFC107;
+            color: black;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #000;
+            border-radius: 10px;
+            margin: 15px;
+            width: 280px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.25em;
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .card-text {
+            margin: 0 0 10px;
+            color: #555;
+        }
+
+        .card-price {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #FFC107;
+            margin-bottom: 10px;
+        }
+
+        .card button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #000;
+            color: #FFC107;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .card button:hover {
+            background-color: #FFC107;
+            color: black;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .filter-container select {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #FFC107;
+            color: black;
+            text-align: center;
+            padding: 9px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            height: 55px;
+            margin-top: auto;
+        }
+
+        .name {
+            color: black;
+            text-align: center;
+            padding: 9px 0;
+            position: absolute;
+            bottom: 0;
+            width: 10%;
+            left: 45%;
+        }
+
+        .telef {
+            color: black;
+            text-align: center;
+            padding: 9px 0;
+            position: absolute;
+            bottom: 0;
+            width: 10%;
+            left: 90%;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #000;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content input[type="email"],
+        .modal-content input[type="password"] {
+            width: 92%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #000;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #000;
+            color: #FFC107;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #FFC107;
+            color: black;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #orderSection {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #orderContainer {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .order-item h3 {
+            margin: 0;
+        }
+
+        .order-item p {
+            margin: 0;
+        }
+
+        .order-item button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #000;
+            color: #FFC107;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .order-item button:hover {
+            background-color: #FFC107;
+            color: black;
+        }
+
+        /* Добавляем стиль для кнопки заказа всех товаров */
+        .order-all {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #000;
+            color: #FFC107;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-top: 20px;
+        }
+
+        .order-all:hover {
+            background-color: #FFC107;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="username" id="username"></div>
+        <h1>Магазин Автозапчастей</h1>
+        <h1>BiBiCa</h1>
+    </header>
+    <nav>
+        <a href="#" onclick="showSection('all')">Все товары</a>
+        <a href="#" onclick="showSection('engine')">Двигатель</a>
+        <a href="#" onclick="showSection('brakes')">Тормоза</a>
+        <a href="#" onclick="showSection('suspension')">Подвеска</a>
+        <a href="#" onclick="showSection('electronics')">Электроника</a>
+        <a href="#" onclick="showSection('order')">Заказ</a>
+        <a href="#" onclick="openModal('registerModal')">Регистрация</a>
+        <a href="#" onclick="openModal('loginModal')">Вход</a>
+    </nav>
+
+    <div class="container" id="productContainer">
+        <!-- Engine Parts -->
+        <div class="card" data-category="engine">
+            <img src="https://cdn.izap24.ru/images/prodacts/sourse/250377/250377261_vtulka-tsilindra-bf-040410001.jpg"
+                alt="Engine Part 1">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Поршень</h2>
+                <p class="card-text">Высококачественный поршень для двигателя</p>
+            </div>
+                <p class="card-price">₽5000</p>
+                <button onclick="addToOrder('Поршень', 5000)">Добавить в заказ</button>
+            </div>
+        </div>
+        <div class="card" data-category="engine">
+            <img src="https://specavtoresurs.ru/uploads/s/h/q/g/hqgkcfqwqzqo/img/tYTmYSXx.jpg" alt="Engine Part 2">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Коленвал</h2>
+                <p class="card-text">Надежный коленвал для вашего двигателя</p>
+                </div>
+                <p class="card-price">₽12000</p>
+                <button onclick="addToOrder('Коленвал', 12000)">Добавить в заказ</button>
+            </div>
+        </div>
+
+        <!-- Brakes Parts -->
+        <div class="card" data-category="brakes">
+            <img src="https://cdn1.ozone.ru/s3/multimedia-s/6182467072.jpg" alt="Brake Part 1">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Тормозные колодки</h2>
+                <p class="card-text">Надежные тормозные колодки для вашей безопасности</p>
+                </div>
+                <p class="card-price">₽2000</p>
+                <button onclick="addToOrder('Тормозные колодки', 2000)">Добавить в заказ</button>
+            </div>
+        </div>
+        <div class="card" data-category="brakes">
+            <img src="https://lowstuff.ru/files/uploads/текстов%20на%20страницах%20сайта/perednie-tormoznye-diski-magazin.jpg"
+                alt="Brake Part 2">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Тормозные диски</h2>
+                <p class="card-text">Высокопроизводительный тормозной диск</p>
+                </div>
+                <p class="card-price">₽8000</p>
+                <button onclick="addToOrder('Тормозной диск', 8000)">Добавить в заказ</button>
+            </div>
+        </div>
+
+        <!-- Suspension Parts -->
+        <div class="card" data-category="suspension">
+            <img src="https://api.cms.motorfirst.ru/pictures/q52n4zpoxassswgc48wkow4so4gwgk.jfif-924a7463d70a4910.jpeg"
+                alt="Suspension Part 1">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Амортизатор</h2>
+                <p class="card-text">Качественный амортизатор для плавной езды</p>
+                </div>
+                <p class="card-price">₽3500</p>
+                <button onclick="addToOrder('Амортизатор', 3500)">Добавить в заказ</button>
+            </div>
+        </div>
+        <div class="card" data-category="suspension">
+            <img src="https://world-zip.ru/wp-content/uploads/7/f/3/7f3991f60eff8057df320837f1c06ce9.jpeg"
+                alt="Suspension Part 2">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Стабилизатор</h2>
+                <p class="card-text">Эффективный стабилизатор для подвески</p>
+                </div>
+                <p class="card-price">₽4500</p>
+                <button onclick="addToOrder('Стабилизатор', 4500)">Добавить в заказ</button>
+            </div>
+        </div>
+
+        <!-- Electronics Parts -->
+        <div class="card" data-category="electronics">
+            <img src="https://be.fitandfix.com/media/catalog/product/cache/d529207e052fabc1dfaf9fd3b91343a7/a/c/acdelco_car_battery_6.jpg"
+                alt="Electronics Part 1">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Аккумулятор</h2>
+                <p class="card-text">Надежный аккумулятор для долгой работы</p>
+                </div>
+                <p class="card-price">₽7000</p>
+                <button onclick="addToOrder('Аккумулятор', 7000)">Добавить в заказ</button>
+            </div>
+        </div>
+        <div class="card" data-category="electronics">
+            <img src="https://dsn-auto.ru/static/img/catalog/a5/m/starter_12v_1_4kvt_vw_tiguan_ii_2016_mot_1_4tsi_startvolt_lst_1805.jpg"
+                alt="Electronics Part 2">
+            <div class="card-body">
+                <div class="card-content">
+                <h2 class="card-title">Стартер</h2>
+                <p class="card-text">Надежный стартер для запуска двигателя</p>
+                </div>
+                <p class="card-price">₽9000</p>
+                <button onclick="addToOrder('Стартер', 9000)">Добавить в заказ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="orderSection">
+        <h2>Ваш заказ</h2>
+        <div id="orderContainer"></div>
+        <!-- Кнопка заказа всех товаров -->
+        <button class="order-all" onclick="orderAll()">Заказать все товары</button>
+    </div>
+
+    <footer>
+        <div class="telef">
+            <p>8-800-555-35-35</p>
+        </div>
+        <div class="name">
+            <p>ООО BiBiCa</p>
+        </div>
+    </footer>
+
+    <!-- Регистрация -->
+    <form action="#" id="form">
+        <div id="registerModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('registerModal')">&times;</span>
+                <h2>Регистрация</h2>
+                <input name="name" type="text" placeholder="Имя" required>
+                <input name="email" type="email" placeholder="Email" required>
+                <input name="password" type="password" placeholder="Пароль" required>
+                <button onclick="return reg()" type="submit">Зарегистрироваться</button>
+            </div>
+        </div>
+    </form>
+    <!-- Вход -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Вход</h2>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Пароль" required>
+            <button>Войти</button>
+        </div>
+    </div>
+
+    <script>
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch(`YOUR_GOOGLE_APPS_SCRIPT_URL?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`Вход выполнен! Добро пожаловать, ${data.name}`);
+                    closeModal('loginModal');
+                    // Отобразить имя пользователя
+                    document.getElementById('username').textContent = `Привет, ${data.name}!`;
+                    // Дополнительные действия после успешного входа
+                } else {
+                    alert('Неверные учетные данные');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
+            }
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    </script>
+
+    <script>
+        const productContainer = document.getElementById('productContainer');
+        const orderSection = document.getElementById('orderSection');
+        const orderContainer = document.getElementById('orderContainer');
+        const products = [
+            { name: 'Поршень', category: 'engine', price: 5000 },
+            { name: 'Коленвал', category: 'engine', price: 12000 },
+            { name: 'Тормозные колодки', category: 'brakes', price: 2000 },
+            { name: 'Тормозной диск', category: 'brakes', price: 8000 },
+            { name: 'Амортизатор', category: 'suspension', price: 3500 },
+            { name: 'Стабилизатор', category: 'suspension', price: 4500 },
+            { name: 'Аккумулятор', category: 'electronics', price: 7000 },
+            { name: 'Стартер', category: 'electronics', price: 9000 }
+        ];
+
+        function addToOrder(name, price) {
+            const orderItem = document.createElement('div');
+            orderItem.classList.add('order-item');
+            orderItem.innerHTML = `
+                <h3>${name}</h3>
+                <p>₽${price}</p>
+                <button onclick="removeFromOrder(this)">Удалить</button>
+            `;
+            orderContainer.appendChild(orderItem);
+            showSection('order');
+        }
+
+        function removeFromOrder(button) {
+            const orderItem = button.parentElement;
+            orderContainer.removeChild(orderItem);
+        }
+
+        function orderAll() {
+            const orderItems = document.querySelectorAll('.order-item');
+            if (orderItems.length === 0) {
+                alert('Ваш заказ пуст.');
+                return;
+            }
+
+            let orderSummary = 'Ваш заказ:\n';
+            orderItems.forEach(item => {
+                const name = item.querySelector('h3').innerText;
+                const price = item.querySelector('p').innerText;
+                orderSummary += `${name} - ${price}\n`;
+            });
+
+            alert(orderSummary);
+        }
+
+        function showSection(section) {
+            if (section === 'order') {
+                productContainer.style.display = 'none';
+                orderSection.style.display = 'flex';
+            } else {
+                productContainer.style.display = 'flex';
+                orderSection.style.display = 'none';
+                filterProducts(section);
+            }
+        }
+
+        function filterProducts(category) {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
